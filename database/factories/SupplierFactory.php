@@ -17,7 +17,7 @@ class SupplierFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => fake()->name($gender = null|'male'|'female')
         ];
     }
 }

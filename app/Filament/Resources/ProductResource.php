@@ -4,8 +4,13 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
+use App\Models\Category;
 use App\Models\Product;
 use Filament\Forms;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -24,8 +29,20 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                //
-            ]);
+                Card::make()
+                    ->schema([
+                        TextInput::make('name'),
+                        Select::make('category_id')
+                            ->label('Category')
+                            ->options(Category::all()->pluck('name', 'id'))
+                            ->searchable(),
+                        TextInput::make('slug'),
+                        TextInput::make('price'),
+                        TextInput::make('limit'),
+                        DateTimePicker::make('created_at')
+                    ])
+                    ->columns(2)
+                ]);
     }
 
     public static function table(Table $table): Table
@@ -33,6 +50,7 @@ class ProductResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id'),
+                TextColumn::make('name'),
                 TextColumn::make('category_id'),
                 TextColumn::make('slug'),
                 TextColumn::make('price'),

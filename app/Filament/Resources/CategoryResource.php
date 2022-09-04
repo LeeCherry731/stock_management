@@ -6,6 +6,8 @@ use App\Filament\Resources\CategoryResource\Pages;
 use App\Filament\Resources\CategoryResource\RelationManagers;
 use App\Models\Category;
 use Filament\Forms;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -24,7 +26,9 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('name'),
+                TextInput::make('slug'),
+                DateTimePicker::make('created_at')
             ]);
     }
 
