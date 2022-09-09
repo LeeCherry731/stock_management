@@ -6,6 +6,8 @@ use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Supplier;
+use Closure;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\DateTimePicker;
@@ -18,6 +20,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 
 class ProductResource extends Resource
 {
@@ -32,13 +35,17 @@ class ProductResource extends Resource
                 Card::make()
                     ->schema([
                         TextInput::make('name'),
+                        TextInput::make('price')->numeric(),
                         Select::make('category_id')
                             ->label('Category')
                             ->options(Category::all()->pluck('name', 'id'))
                             ->searchable(),
-                        TextInput::make('slug'),
-                        TextInput::make('price'),
-                        TextInput::make('limit'),
+                        Select::make('supplier_id')
+                            ->label('Supplier')
+                            ->options(Supplier::all()->pluck('name', 'id'))
+                            ->searchable(),
+                        TextInput::make('limit')->numeric(),
+                        TextInput::make('quantity')->numeric(),
                         DateTimePicker::make('created_at')
                     ])
                     ->columns(2)
@@ -52,10 +59,11 @@ class ProductResource extends Resource
                 TextColumn::make('id'),
                 TextColumn::make('name'),
                 TextColumn::make('category.name'),
-                TextColumn::make('slug'),
+                TextColumn::make('category.slug')->label('slug'),
                 TextColumn::make('price'),
                 TextColumn::make('limit'),
-                TextColumn::make('created_at'),
+                TextColumn::make('quantity'),
+                TextColumn::make('created_at')->dateTime()
             ])
             ->filters([
                 //

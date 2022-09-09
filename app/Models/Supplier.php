@@ -12,11 +12,13 @@ class Supplier extends Model
     protected $fillable = [
         'product_id',
         'name',
+        'email',
     ];
 
     public function product()
     {
-        return $this->belongsTo(Product::class);
+        return $this->hasMany(Product::class);
     }
+
 
 }
