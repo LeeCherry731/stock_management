@@ -2,14 +2,10 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CategoryResource\Pages;
-use App\Filament\Resources\CategoryResource\RelationManagers;
-use App\Models\Category;
-use Closure;
+use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\RelationManagers;
+use App\Models\User;
 use Filament\Forms;
-use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\TextInput;
-use Filament\Tables\Actions\CreateAction;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -17,11 +13,10 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Str;
 
-class CategoryResource extends Resource
+class UserResource extends Resource
 {
-    protected static ?string $model = Category::class;
+    protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
@@ -29,12 +24,6 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')->reactive()->afterStateUpdated(function (Closure $set, $state) {
-                    $set('slug', Str::slug($state));
-                }),
-                TextInput::make('slug'),
-                DateTimePicker::make('created_at'),
-
 
             ]);
     }
@@ -45,21 +34,14 @@ class CategoryResource extends Resource
             ->columns([
                 TextColumn::make('id'),
                 TextColumn::make('name'),
-                TextColumn::make('slug'),
+                TextColumn::make('email'),
                 TextColumn::make('created_at')->dateTime()
-
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                CreateAction::make()
-                    ->mutateFormDataUsing(function (array $data): array {
-                        $data['slug'] = Str::slug($data['name']);
-
-                        return $data;
-                    })
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -76,9 +58,9 @@ class CategoryResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCategories::route('/'),
-            'create' => Pages\CreateCategory::route('/create'),
-            'edit' => Pages\EditCategory::route('/{record}/edit'),
+            'index' => Pages\ListUsers::route('/'),
+            'create' => Pages\CreateUser::route('/create'),
+            'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
 }
