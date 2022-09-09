@@ -5,9 +5,11 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CategoryResource\Pages;
 use App\Filament\Resources\CategoryResource\RelationManagers;
 use App\Models\Category;
-// use Filament\Forms;
+use Closure;
+use Filament\Forms;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\CreateAction;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -15,6 +17,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 
 class CategoryResource extends Resource
 {
@@ -26,9 +29,13 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name'),
+                TextInput::make('name')->reactive()->afterStateUpdated(function (Closure $set, $state) {
+                    $set('slug', Str::slug($state));
+                }),
                 TextInput::make('slug'),
-                DateTimePicker::make('created_at')
+                DateTimePicker::make('created_at'),
+
+
             ]);
     }
 
@@ -40,12 +47,19 @@ class CategoryResource extends Resource
                 TextColumn::make('name'),
                 TextColumn::make('slug'),
                 TextColumn::make('created_at'),
+
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                CreateAction::make()
+                    ->mutateFormDataUsing(function (array $data): array {
+                        $data['slug'] = Str::slug($data['name']);
+
+                        return $data;
+                    })
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

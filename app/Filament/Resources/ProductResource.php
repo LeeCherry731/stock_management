@@ -51,7 +51,7 @@ class ProductResource extends Resource
             ->columns([
                 TextColumn::make('id'),
                 TextColumn::make('name'),
-                TextColumn::make('category_id'),
+                TextColumn::make('category.name'),
                 TextColumn::make('slug'),
                 TextColumn::make('price'),
                 TextColumn::make('limit'),
