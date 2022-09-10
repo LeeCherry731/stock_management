@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
             $table->foreignId('category_id')->cascadeOnDelete();
-            $table->foreignId('supplier_id')->cascadeOnDelete();
             $table->string('name')->unique();
             $table->integer('price');
             $table->integer('limit')->default(0);

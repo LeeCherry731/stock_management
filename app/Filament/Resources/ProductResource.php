@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
+use App\Filament\Resources\ProductResource\RelationManagers\SuppliersRelationManager;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Supplier;
@@ -11,6 +12,7 @@ use Closure;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\MultiSelect;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
@@ -39,13 +41,16 @@ class ProductResource extends Resource
                         Select::make('category_id')
                             ->label('Category')
                             ->options(Category::all()->pluck('name', 'id'))
-                            ->searchable(),
-                        Select::make('supplier_id')
-                            ->label('Supplier')
-                            ->options(Supplier::all()->pluck('name', 'id'))
-                            ->searchable(),
-                        TextInput::make('limit')->numeric(),
-                        TextInput::make('quantity')->numeric(),
+                            ->searchable()
+                            ->required(),
+                        // Select::make('supplier_id')
+                        //     ->label('Supplier')
+                        //     ->options(Supplier::all()->pluck('name', 'id'))
+                        //     ->searchable(),
+                        MultiSelect::make('suppliers')
+                            ->relationship('suppliers', 'name'),
+                        TextInput::make('limit')->numeric()->required(),
+                        TextInput::make('quantity')->numeric()->required(),
                         DateTimePicker::make('created_at')
                     ])
                     ->columns(2)
@@ -79,7 +84,7 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            SuppliersRelationManager::class,
         ];
     }
 
