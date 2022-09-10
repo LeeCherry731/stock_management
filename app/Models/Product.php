@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ProductSupplier;
 
 class Product extends Model
 {
@@ -11,7 +12,6 @@ class Product extends Model
 
     protected $fillable = [
         'category_id',
-        'supplier_id',
         'name',
         'slug',
         'price',
@@ -23,9 +23,9 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function supplier()
+    public function suppliers()
     {
-        return $this->belongsTo(Supplier::class);
+        return $this->belongsToMany(Supplier::class, 'product_supplier', 'product_id', 'supplier_id')->using(ProductSupplier::class)->withTimestamps();
     }
 
 }

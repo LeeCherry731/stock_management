@@ -4,20 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ProductSupplier;
 
 class Supplier extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'product_id',
         'name',
         'email',
     ];
 
-    public function product()
+    public function products()
     {
-        return $this->hasMany(Product::class);
+        return $this->belongsToMany(Product::class,  'product_supplier', 'supplier_id', 'product_id')->using(ProductSupplier::class)->withTimestamps();
     }
 
 
