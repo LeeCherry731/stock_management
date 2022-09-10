@@ -3,28 +3,49 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\MultiSelect;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
+use Filament\Resources\Pages\CreateRecord;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Columns\TextColumn;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Contracts\Role;
+use Spatie\Permission\Models\Role as ModelsRole;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-
+                TextInput::make('name')
+                    ->required()
+                    ->maxLength(255),
+                TextInput::make('email')
+                    ->email()
+                    ->required()
+                    ->maxLength(255),
+                DateTimePicker::make('email_verified_at'),
+                MultiSelect::make('roles')
+                    ->relationship('roles', 'name'),
+                    // ->default(ModelsRole::all()->pluck('name', 'id')->toArray()),
+                TextInput::make('password')
+                    ->password()
+                    ->required(fn($livewire) => $livewire instanceof CreateRecord)
+                    ->dehydrated(fn($state) => filled($state))
+                    ->dehydrateStateUsing(fn($state) => Hash::make($state))
+                    ->maxLength(255),
             ]);
     }
 
@@ -32,10 +53,13 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id'),
                 TextColumn::make('name'),
                 TextColumn::make('email'),
-                TextColumn::make('created_at')->dateTime()
+                BooleanColumn::make('email_verified_at')->default(false),
+                TextColumn::make('created_at')
+                    ->dateTime(),
+                TextColumn::make('updated_at')
+                    ->dateTime(),
             ])
             ->filters([
                 //
