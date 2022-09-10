@@ -56,4 +56,8 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasMany(Import::class);
     }
+    public function exports()
+    {
+        return $this->hasMany(Export::class);
+    }
 }

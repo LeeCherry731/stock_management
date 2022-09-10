@@ -33,5 +33,9 @@ class Product extends Model
     {
         return $this->hasMany(Import::class);
     }
+    public function exports()
+    {
+        return $this->hasMany(Export::class);
+    }
 
 }
