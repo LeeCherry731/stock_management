@@ -22,6 +22,7 @@ class ImportResource extends Resource
     protected static ?string $model = Import::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationGroup = 'Import and Export';
 
     public static function form(Form $form): Form
     {

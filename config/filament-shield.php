@@ -24,6 +24,11 @@ return [
         'name' => 'admin',
     ],
 
+    'user' => [
+        'enabled' => true,
+        'name' => 'user',
+    ],
+
     'permission_prefixes' => [
         'resource' => [
             'view',
