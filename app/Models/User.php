@@ -51,4 +51,9 @@ class User extends Authenticatable implements FilamentUser
         // return true;
         return $this->hasRole(['super_admin', 'admin']);
     }
+
+    public function imports()
+    {
+        return $this->hasMany(Import::class);
+    }
 }

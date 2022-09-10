@@ -29,4 +29,9 @@ class Product extends Model
         return $this->belongsToMany(Supplier::class, 'product_supplier', 'product_id', 'supplier_id')->using(ProductSupplier::class)->withTimestamps();
     }
 
+    public function imports()
+    {
+        return $this->hasMany(Import::class);
+    }
+
 }
