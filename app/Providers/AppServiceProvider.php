@@ -33,9 +33,6 @@ class AppServiceProvider extends ServiceProvider
                 'Filament Shield',
             ]);
 
-            Filament::getWidgets([
-                LowLimitProducts::class,
-            ]);
         });
 
 

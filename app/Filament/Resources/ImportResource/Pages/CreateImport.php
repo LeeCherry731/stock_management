@@ -16,7 +16,7 @@ class CreateImport extends CreateRecord
         $amount = (int)$data['amount'];
         $productField = (int)$data['product_id'];
 
-        $product = Product::find($productField)->first();
+        $product = Product::find($productField);
 
         if($product) {
             $product->quantity = $product->quantity + $amount;
