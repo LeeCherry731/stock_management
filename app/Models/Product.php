@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ProductSupplier;
 
 class Product extends Model
 {
@@ -15,6 +16,7 @@ class Product extends Model
         'slug',
         'price',
         'limit',
+        'quantity',
     ];
 
     public function category()
@@ -24,6 +26,16 @@ class Product extends Model
 
     public function suppliers()
     {
-        return $this->hasMany(Supplier::class);
+        return $this->belongsToMany(Supplier::class, 'product_supplier', 'product_id', 'supplier_id')->using(ProductSupplier::class)->withTimestamps();
     }
+
+    public function imports()
+    {
+        return $this->hasMany(Import::class);
+    }
+    public function exports()
+    {
+        return $this->hasMany(Export::class);
+    }
+
 }
