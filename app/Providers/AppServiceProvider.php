@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Filament\Resources\ProductResource\Widgets\LowLimitProducts;
 use Filament\Facades\Filament;
 use Filament\Navigation\NavigationGroup;
 use Illuminate\Support\ServiceProvider;
@@ -31,6 +32,12 @@ class AppServiceProvider extends ServiceProvider
                 'Import and Export',
                 'Filament Shield',
             ]);
+
+            Filament::getWidgets([
+                LowLimitProducts::class,
+            ]);
         });
+
+
     }
 }

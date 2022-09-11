@@ -23,11 +23,17 @@ class DatabaseSeeder extends Seeder
 
         Product::create([
             'category_id' => 1,
-            // 'supplier_id' => 1,
             'name' => 'pen',
             'price' => 20,
             'limit' => 10,
             'quantity' => 15,
+        ]);
+        Product::create([
+            'category_id' => 1,
+            'name' => 'nut',
+            'price' => 10,
+            'limit' => 15,
+            'quantity' => 50,
         ]);
 
 /////////////////////////////////////////

@@ -169,7 +169,7 @@ return [
     |
     */
 
-    'dark_mode' => false,
+    'dark_mode' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -289,6 +289,17 @@ return [
             DispatchServingFilamentEvent::class,
             MirrorConfigToSubpackages::class,
         ],
+    ],
+
+    'database_notifications' => [
+        'enabled' => true,
+        // ...
+    ],
+
+    'database' => [
+        'enabled' => true,
+        'polling_interval' => '30s',
+        // ...
     ],
 
 ];
