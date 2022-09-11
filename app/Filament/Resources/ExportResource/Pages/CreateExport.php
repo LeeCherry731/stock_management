@@ -20,18 +20,30 @@ class CreateExport extends CreateRecord
     {
         $this->amount = (int)$data['amount'];
         $this->productField = (int)$data['product_id'];
+
+        $this->product = Product::find($this->productField);
+
+        if($this->product->quantity < $this->amount)
+        {
+            $data['amount'] = $this->product->quantity;
+        }
+
         return $data;
     }
 
     protected function afterCreate(): void
     {
         // dd($this->productField);
-        $this->product = Product::find($this->productField);
         // dd($this->product);
         if($this->product) {
-
-                $this->product->quantity = $this->product->quantity - $this->amount;
-                $this->product->save();
+                if($this->product->quantity > $this->amount)
+                {
+                    $this->product->quantity = $this->product->quantity - $this->amount;
+                    $this->product->save();
+                } else {
+                    $this->product->quantity = 0;
+                    $this->product->save();
+                }
 
         }
 
